@@ -1,0 +1,39 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.maxim.picoto.ImageViewFragment"
+    android:id="@+id/image_view_fragment">
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:indeterminateTint="@color/primary"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/image_view"
+        android:scaleType="fitCenter"
+        android:visibility="visible"
+        android:layout_marginTop="10dp"
+        />
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="@dimen/floating_action_bar_size"
+        android:layout_height="@dimen/floating_action_bar_size"
+        android:id="@+id/camera_button"
+        app:layout_constraintEnd_toEndOf="@id/image_view"
+        app:layout_constraintBottom_toBottomOf="@id/image_view"
+        android:layout_marginRight="@dimen/margin"
+        android:layout_marginBottom="@dimen/margin"
+        android:src="@drawable/camera_icon"
+        app:backgroundTint="@color/accent"/>
+
+
+
+</android.support.constraint.ConstraintLayout>

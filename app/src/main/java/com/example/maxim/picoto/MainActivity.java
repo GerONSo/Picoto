@@ -1,5 +1,6 @@
 package com.example.maxim.picoto;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -36,5 +37,10 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView{
                 .commit();
 
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

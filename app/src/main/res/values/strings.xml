@@ -1,6 +1,39 @@
 <resources>
     <string name="app_name">Picoto</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="names">
+        <item>Bicentennial Print</item>
+        <item>Boy with Sweets</item>
+        <item>Cap Lombard</item>
+        <item>Colors from Distance</item>
+        <item>Cotopaxi</item>
+        <item>Crucifixion</item>
+        <item>Divan Japonais</item>
+        <item>Edith</item>
+        <item>The Magnificent</item>
+        <item>Horses</item>
+        <item>Saint-Remy</item>
+        <item>Calm</item>
+        <item>Madonna</item>
+        <item>Friend Portrait</item>
+        <item>Picasso</item>
+        <item>Ritmo plastico</item>
+        <item>Seawall</item>
+        <item>Self-Portrait</item>
+        <item>The Annunciation</item>
+        <item>Green Boathouse</item>
+        <item>The Scream</item>
+        <item>The Starry Night</item>
+        <item>The Tower of Babel</item>
+        <item>The Trial</item>
+        <item>Yellow Sunset</item>
+        <item>Fishing Boats</item>
+        <item>Trees in a Lane</item>
+        <item>Tullia</item>
+        <item>Orange Tree</item>
+        <item>Victory</item>
+        <item>White Zig Zags</item>
+    </string-array>
 </resources>

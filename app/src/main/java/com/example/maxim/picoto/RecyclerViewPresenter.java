@@ -29,15 +29,15 @@ public class RecyclerViewPresenter extends MvpPresenter<IRecyclerView>{
 
     public void setList() {
         list=new ArrayList<>();
-        ArrayList<String> names=NameQuery.getNames();
+        String names[]=resources.getStringArray(R.array.names);
         int j=0;
-        for(int i=0;i<31;i++) {
+        for(int i=0;i<32;i++) {
             if(i!=8){
                 String name="p";
                 if(i<10) name+="0";
                 name+=String.valueOf(i);
-                list.add(getRecyclerViewData(getId(name), names.get(j), i));
-                Log.d("mytag",names.get(j));
+                list.add(getRecyclerViewData(getId(name), names[j], i));
+                Log.d("mytag",names[j]);
                 j++;
             }
 

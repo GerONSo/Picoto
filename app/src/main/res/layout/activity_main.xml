@@ -5,26 +5,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.maxim.picoto.MainActivity"
-    android:orientation="horizontal">
-
+    tools:context="com.example.maxim.picoto.MainActivity">
     <FrameLayout
         android:id="@+id/image_frame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/recycler_frame"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"/>
     <FrameLayout
         android:id="@+id/recycler_frame"
         android:layout_width="match_parent"
         android:layout_height="135dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/image_frame"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/image_frame">
-
+        app:layout_constraintEnd_toEndOf="parent">
     </FrameLayout>
-
 </android.support.constraint.ConstraintLayout>

@@ -21,7 +21,6 @@
         android:id="@+id/image_view"
         android:scaleType="fitCenter"
         android:visibility="visible"
-        android:layout_marginTop="10dp"
         />
     <android.support.design.widget.FloatingActionButton
         android:layout_width="@dimen/floating_action_bar_size"

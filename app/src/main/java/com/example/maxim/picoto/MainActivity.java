@@ -26,12 +26,13 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView{
 
     @Override
     public void createFragment() {
-        recyclerViewFragment=RecyclerViewFragment.newInstance();
         imageViewFragment=ImageViewFragment.newInstance();
+        recyclerViewFragment=RecyclerViewFragment.newInstance();
+
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.image_frame,recyclerViewFragment)
-                .add(R.id.recycler_frame,imageViewFragment)
+                .add(R.id.image_frame,imageViewFragment)
+                .add(R.id.recycler_frame,recyclerViewFragment)
                 .commit();
 
 

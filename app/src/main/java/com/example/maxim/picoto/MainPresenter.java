@@ -56,4 +56,17 @@ public class MainPresenter extends MvpPresenter<IMainView>{
     public void setImage(Bitmap image){
         imageViewPresenter.setImage(image);
     }
+
+    public void setProgressVisible(){
+        imageViewPresenter.setProgressVisible();
+    }
+    public void setProgressGone(){
+        imageViewPresenter.setProgressGone();
+    }
+    public void setLowOpacity(){
+        imageViewPresenter.setLowOpacity();
+    }
+    public void setHighOpacity(){
+        imageViewPresenter.setHighOpacity();
+    }
 }

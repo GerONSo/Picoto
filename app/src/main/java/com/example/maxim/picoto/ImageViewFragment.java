@@ -60,17 +60,18 @@ public class ImageViewFragment extends MvpAppCompatFragment implements IImageVie
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         Bitmap openGallery=null;
         if(savedInstanceState==null){
-
+            presenter.setMainPresenter(mainPresenter);
             openGallery= BitmapFactory.decodeResource(getResources(),R.drawable.no_image);
             presenter.setImage(openGallery);
-            mainPresenter.setImageViewPresenter(presenter);
-            presenter.setMainPresenter(mainPresenter);
+
+
         }
 
         imageView=view.findViewById(R.id.image_view);
         progressBar=view.findViewById(R.id.progress_bar);
         cameraButton=view.findViewById(R.id.camera_button);
         presenter.setImageView(imageView);
+        //progressBar.setVisibility(View.VISIBLE);
 
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +88,20 @@ public class ImageViewFragment extends MvpAppCompatFragment implements IImageVie
 
     public void setMainPresenter(MainPresenter mainPresenter) {
         this.mainPresenter = mainPresenter;
+        this.mainPresenter.setImageViewPresenter(presenter);
+    }
+
+    public void setProgressVisible(){
+        progressBar.setVisibility(View.VISIBLE);
+    }
+    public void setProgressGone(){
+        progressBar.setVisibility(View.GONE);
+    }
+    public void setLowOpacity(){
+        imageView.setAlpha((float)1.0);
+    }
+    public void setHighOpacity(){
+        imageView.setAlpha((float)0.5);
     }
 
 }

@@ -12,5 +12,12 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 public interface IImageView extends MvpView{
     @StateStrategyType(AddToEndSingleStrategy.class)
     void setImage(Bitmap bmp);
-
+    @StateStrategyType(AddToEndSingleStrategy.class)
+    void setProgressVisible();
+    @StateStrategyType(AddToEndSingleStrategy.class)
+    void setProgressGone();
+    @StateStrategyType(AddToEndSingleStrategy.class)
+    void setLowOpacity();
+    @StateStrategyType(AddToEndSingleStrategy.class)
+    void setHighOpacity();
 }

@@ -46,11 +46,13 @@ public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyc
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        if(savedInstanceState==null)
+            recyclerViewPresenter.setMainPresenter(mainPresenter);
         recyclerViewPresenter.setResources(getResources());
         recyclerViewPresenter.setContext(getContext());
         recyclerViewPresenter.setList();
-        recyclerViewPresenter.setMainPresenter(mainPresenter);
-        mainPresenter.setRecyclerViewPresenter(recyclerViewPresenter);
+        //recyclerViewPresenter.setMainPresenter(mainPresenter);
+
         Log.d("mytag", String.valueOf(recyclerViewPresenter.getList().get(0).getName()));
         listView=view.findViewById(R.id.listView);
         listView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
@@ -58,11 +60,14 @@ public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyc
             @Override
             public void onStyleSelected(int position) {
                 Bitmap styleImage=recyclerViewPresenter.getImage();
-                Bitmap imageResult;
+                mainPresenter.setProgressVisible();
+                mainPresenter.setHighOpacity();
                 try {
                     ServerHelper.sendImage(styleImage, position, new ServerHelper.OnImageResult() {
                         @Override
                         public void onImageResult(Bitmap image) {
+                            mainPresenter.setProgressGone();
+                            mainPresenter.setLowOpacity();
                             Log.d("heii","here");
                             mainPresenter.setImage(image);
                         }
@@ -83,6 +88,7 @@ public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyc
 
     public void setMainPresenter(MainPresenter mainPresenter) {
         this.mainPresenter = mainPresenter;
+        this.mainPresenter.setRecyclerViewPresenter(recyclerViewPresenter);
     }
 
 }

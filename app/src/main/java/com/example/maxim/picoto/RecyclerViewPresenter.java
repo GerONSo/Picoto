@@ -65,5 +65,6 @@ public class RecyclerViewPresenter extends MvpPresenter<IRecyclerView>{
 
     public void setMainPresenter(MainPresenter mainPresenter) {
         this.mainPresenter = mainPresenter;
+        mainPresenter.setRecyclerViewPresenter(this);
     }
 }

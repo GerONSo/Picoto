@@ -4,14 +4,17 @@ package com.example.maxim.picoto;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -26,9 +29,15 @@ public class ImageViewFragment extends MvpAppCompatFragment implements IImageVie
     @InjectPresenter
     ImageViewPresenter presenter;
 
-    ImageView imageView;
-    ProgressBar progressBar;
-    FloatingActionButton cameraButton;
+
+
+    private MainPresenter mainPresenter;
+
+
+
+    private ImageView imageView;
+    private ProgressBar progressBar;
+    private FloatingActionButton cameraButton;
 
     public static final int REQUEST_IMAGE_CAPTURE = 1;
 
@@ -49,18 +58,24 @@ public class ImageViewFragment extends MvpAppCompatFragment implements IImageVie
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        Bitmap openGallery=null;
         if(savedInstanceState==null){
-            Bitmap openGallery= BitmapFactory.decodeResource(getResources(),R.drawable.no_image);
+
+            openGallery= BitmapFactory.decodeResource(getResources(),R.drawable.no_image);
             presenter.setImage(openGallery);
+            mainPresenter.setImageViewPresenter(presenter);
+            presenter.setMainPresenter(mainPresenter);
         }
 
         imageView=view.findViewById(R.id.image_view);
         progressBar=view.findViewById(R.id.progress_bar);
         cameraButton=view.findViewById(R.id.camera_button);
+        presenter.setImageView(imageView);
+
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setCameraImage();
+                presenter.setCameraImage();
             }
         });
     }
@@ -70,21 +85,8 @@ public class ImageViewFragment extends MvpAppCompatFragment implements IImageVie
         imageView.setImageBitmap(bmp);
     }
 
-    public void setCameraImage(){
-        Intent takeImageIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takeImageIntent.resolveActivity(getContext().getPackageManager()) != null) {
-            startActivityForResult(takeImageIntent, REQUEST_IMAGE_CAPTURE);
-        }
-
+    public void setMainPresenter(MainPresenter mainPresenter) {
+        this.mainPresenter = mainPresenter;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            imageView.setImageBitmap(imageBitmap);
-        }
-
-    }
 }

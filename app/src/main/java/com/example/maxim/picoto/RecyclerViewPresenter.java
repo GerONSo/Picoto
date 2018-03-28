@@ -21,7 +21,7 @@ public class RecyclerViewPresenter extends MvpPresenter<IRecyclerView>{
     private ArrayList<RecyclerViewData> list;
     private Resources resources;
     private Context context;
-
+    private MainPresenter mainPresenter;
 
     public ArrayList<RecyclerViewData> getList() {
         return list;
@@ -57,5 +57,13 @@ public class RecyclerViewPresenter extends MvpPresenter<IRecyclerView>{
 
     public void setContext(Context context) {
         this.context = context;
+    }
+
+    public Bitmap getImage(){
+        return mainPresenter.getImage();
+    }
+
+    public void setMainPresenter(MainPresenter mainPresenter) {
+        this.mainPresenter = mainPresenter;
     }
 }

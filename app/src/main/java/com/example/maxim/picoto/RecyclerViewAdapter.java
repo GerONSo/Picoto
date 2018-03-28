@@ -13,10 +13,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private RecyclerViewFragment recyclerViewFragment;
     private RecyclerViewPresenter recyclerViewPresenter;
+    private OnStyleSelected callback;
 
-    public RecyclerViewAdapter(RecyclerViewFragment recyclerViewFragment,RecyclerViewPresenter recyclerViewPresenter) {
+    interface OnStyleSelected{
+        void onStyleSelected(int position);
+    }
+
+    public RecyclerViewAdapter(RecyclerViewFragment recyclerViewFragment,RecyclerViewPresenter recyclerViewPresenter,OnStyleSelected callback) {
         this.recyclerViewFragment = recyclerViewFragment;
         this.recyclerViewPresenter=recyclerViewPresenter;
+        this.callback=callback;
     }
 
     @Override
@@ -26,10 +32,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         Log.d("mytag", String.valueOf(position));
         holder.imageImageView.setImageBitmap(recyclerViewPresenter.getList().get(position).getImage());
         holder.nameTextView.setText(recyclerViewPresenter.getList().get(position).getName());
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callback.onStyleSelected(position);
+            }
+        });
     }
 
     @Override

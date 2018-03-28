@@ -1,6 +1,7 @@
 package com.example.maxim.picoto;
 
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,8 @@ import android.view.ViewGroup;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 
+import java.io.IOException;
+
 
 public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyclerView {
 
@@ -24,6 +27,7 @@ public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyc
 
     private RecyclerView listView;
     private RecyclerViewAdapter adapter;
+    private MainPresenter mainPresenter;
 
 
     public RecyclerViewFragment() {
@@ -45,14 +49,40 @@ public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyc
         recyclerViewPresenter.setResources(getResources());
         recyclerViewPresenter.setContext(getContext());
         recyclerViewPresenter.setList();
+        recyclerViewPresenter.setMainPresenter(mainPresenter);
+        mainPresenter.setRecyclerViewPresenter(recyclerViewPresenter);
         Log.d("mytag", String.valueOf(recyclerViewPresenter.getList().get(0).getName()));
         listView=view.findViewById(R.id.listView);
         listView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
-        adapter=new RecyclerViewAdapter(this,recyclerViewPresenter);
+        adapter=new RecyclerViewAdapter(this, recyclerViewPresenter, new RecyclerViewAdapter.OnStyleSelected() {
+            @Override
+            public void onStyleSelected(int position) {
+                Bitmap styleImage=recyclerViewPresenter.getImage();
+                Bitmap imageResult;
+                try {
+                    ServerHelper.sendImage(styleImage, position, new ServerHelper.OnImageResult() {
+                        @Override
+                        public void onImageResult(Bitmap image) {
+                            Log.d("heii","here");
+                            mainPresenter.setImage(image);
+                        }
+                    });
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         listView.setAdapter(adapter);
     }
 
     public RecyclerViewPresenter getRecyclerViewPresenter() {
         return recyclerViewPresenter;
     }
+
+    public void setMainPresenter(MainPresenter mainPresenter) {
+        this.mainPresenter = mainPresenter;
+    }
+
 }

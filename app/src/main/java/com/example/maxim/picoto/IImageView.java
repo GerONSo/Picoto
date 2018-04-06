@@ -20,4 +20,6 @@ public interface IImageView extends MvpView{
     void setLowOpacity();
     @StateStrategyType(AddToEndSingleStrategy.class)
     void setHighOpacity();
+    @StateStrategyType(AddToEndSingleStrategy.class)
+    void saveImage();
 }

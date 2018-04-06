@@ -31,16 +31,15 @@ public class RecyclerViewPresenter extends MvpPresenter<IRecyclerView>{
         list=new ArrayList<>();
         String names[]=resources.getStringArray(R.array.names);
         int j=0;
-        for(int i=0;i<32;i++) {
-            if(i!=8){
-                String name="p";
-                if(i<10) name+="0";
-                name+=String.valueOf(i);
-                list.add(getRecyclerViewData(getId(name), names[j], i));
-                Log.d("mytag",names[j]);
-                j++;
-            }
+        for(int i=0;i<31;i++) {
+            if(i==11 || i==8) continue;
 
+            String name="p";
+            if(i<10) name+="0";
+            name+=String.valueOf(i);
+            list.add(getRecyclerViewData(getId(name), names[j], i));
+            Log.d("mytag",names[j]);
+            j++;
         }
     }
 

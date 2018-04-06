@@ -28,6 +28,7 @@ public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyc
     private RecyclerView listView;
     private RecyclerViewAdapter adapter;
     private MainPresenter mainPresenter;
+    private Bitmap styleImage;
 
 
     public RecyclerViewFragment() {
@@ -56,10 +57,11 @@ public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyc
         Log.d("mytag", String.valueOf(recyclerViewPresenter.getList().get(0).getName()));
         listView=view.findViewById(R.id.listView);
         listView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+
         adapter=new RecyclerViewAdapter(this, recyclerViewPresenter, new RecyclerViewAdapter.OnStyleSelected() {
             @Override
             public void onStyleSelected(int position) {
-                Bitmap styleImage=recyclerViewPresenter.getImage();
+                styleImage=recyclerViewPresenter.getImage();
                 mainPresenter.setProgressVisible();
                 mainPresenter.setHighOpacity();
                 try {

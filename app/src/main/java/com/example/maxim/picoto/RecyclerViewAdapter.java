@@ -39,7 +39,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                callback.onStyleSelected(position);
+                callback.onStyleSelected(recyclerViewPresenter.getList().get(position).getStyleNumber());
             }
         });
     }

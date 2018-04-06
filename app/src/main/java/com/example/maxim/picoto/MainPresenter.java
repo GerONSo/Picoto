@@ -11,9 +11,9 @@ import java.io.File;
 import static com.example.maxim.picoto.MainActivity.FILES_DIR;
 
 @InjectViewState
-public class MainPresenter extends MvpPresenter<IMainView>{
+public class MainPresenter extends MvpPresenter<IMainView> {
 
-    interface OnActivityResultListener{
+    interface OnActivityResultListener {
         void onActivityResultListener(File file);
     }
 
@@ -30,43 +30,51 @@ public class MainPresenter extends MvpPresenter<IMainView>{
         this.imageViewPresenter = imageViewPresenter;
     }
 
-    public void createFragment(){
+    public void createFragment() {
         getViewState().createFragment();
     }
 
-    public void getCameraImage(OnActivityResultListener listener){
-        callback=listener;
-        file=getTempPhotoFile();
+    public void getCameraImage(OnActivityResultListener listener) {
+        callback = listener;
+        file = getTempPhotoFile();
         getViewState().requestImageFromCamera(file);
     }
 
-    public void onCameraImageReady(){
+    public void onCameraImageReady() {
         callback.onActivityResultListener(file);
     }
 
-    private File getTempPhotoFile(){
-        File filesDir=FILES_DIR;
+    private File getTempPhotoFile() {
+        File filesDir = FILES_DIR;
         return FileUtils.getNewImageFile(filesDir, "tmp_", ".jpg");
     }
 
-    public Bitmap getImage(){
+    public Bitmap getImage() {
         return imageViewPresenter.getImage();
     }
 
-    public void setImage(Bitmap image){
+    public void setImage(Bitmap image) {
         imageViewPresenter.setImage(image);
     }
 
-    public void setProgressVisible(){
+
+    public void setProgressVisible() {
         imageViewPresenter.setProgressVisible();
     }
-    public void setProgressGone(){
+
+    public void setProgressGone() {
         imageViewPresenter.setProgressGone();
     }
-    public void setLowOpacity(){
+
+    public void setLowOpacity() {
         imageViewPresenter.setLowOpacity();
     }
-    public void setHighOpacity(){
+
+    public void setHighOpacity() {
         imageViewPresenter.setHighOpacity();
+    }
+
+    public void saveImage() {
+        imageViewPresenter.saveImage();
     }
 }

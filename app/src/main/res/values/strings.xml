@@ -3,6 +3,8 @@
 
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="share">share</string>
+    <string name="save">save</string>
     <string-array name="names">
         <item>Bicentennial Print</item>
         <item>Boy with Sweets</item>
@@ -15,7 +17,6 @@
         <item>The Magnificent</item>
         <item>Horses</item>
         <item>Saint-Remy</item>
-        <item>Calm</item>
         <item>Madonna</item>
         <item>Friend Portrait</item>
         <item>Picasso</item>

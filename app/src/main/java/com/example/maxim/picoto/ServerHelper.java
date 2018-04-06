@@ -68,6 +68,7 @@ public class ServerHelper {
             Bitmap imageResult=null;
             try {
                 ByteArrayOutputStream stream=new ByteArrayOutputStream();
+
                 image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                 byte imageBytes[]=stream.toByteArray();
                 stream.close();

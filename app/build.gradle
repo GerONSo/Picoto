@@ -29,8 +29,8 @@ dependencies {
     //MOXY
     implementation 'com.arello-mobile:moxy:1.5.3'
     annotationProcessor 'com.arello-mobile:moxy-compiler:1.5.3'
-    compile 'com.arello-mobile:moxy-app-compat:1.5.3'
-    compile 'com.android.support:design:26.1.0'
+    implementation 'com.arello-mobile:moxy-app-compat:1.5.3'
+    implementation 'com.android.support:design:26.1.0'
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.6.0'

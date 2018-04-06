@@ -18,15 +18,14 @@ import java.io.File;
 import java.io.IOException;
 
 @InjectViewState
-public class ImageViewPresenter extends MvpPresenter<IImageView>{
-
+public class ImageViewPresenter extends MvpPresenter<IImageView> {
 
 
     private MainPresenter mainPresenter;
     private ImageView imageView;
+    private Bitmap imageStyle;
 
-
-    public void setImage(Bitmap bmp){
+    public void setImage(Bitmap bmp) {
         getViewState().setImage(bmp);
     }
 
@@ -35,19 +34,22 @@ public class ImageViewPresenter extends MvpPresenter<IImageView>{
         File mainImage;
         mainImage = file;
         Point size = new Point();
-        size.set(imageView.getWidth(),imageView.getHeight());
+        size.set(imageView.getWidth(), imageView.getHeight());
         int maxSide = Math.max(size.x, size.y);
         Bitmap bitmap = null;
-        Log.d("mytag", maxSide+" "+maxSide);
+        Log.d("mytag", maxSide + " " + maxSide);
         try {
             bitmap = ImageUtils.getScaledBitmap(mainImage, maxSide, maxSide);
         } catch (IOException e) {
 
         }
+
+
+        imageStyle = bitmap;
         setImage(bitmap);
     }
 
-    public void setCameraImage(){
+    public void setCameraImage() {
         //Log.d("tag", String.valueOf(mainPresenter));
         mainPresenter.getCameraImage(new MainPresenter.OnActivityResultListener() {
             @Override
@@ -69,21 +71,28 @@ public class ImageViewPresenter extends MvpPresenter<IImageView>{
         this.imageView = imageView;
     }
 
-    public Bitmap getImage(){
-        return ((BitmapDrawable)imageView.getDrawable()).getBitmap();
+    public Bitmap getImage() {
+        //Log.d("style", String.valueOf(imageStyle.getWidth()));
+        return imageStyle;
     }
 
-    public void setProgressVisible(){
+    public void setProgressVisible() {
         getViewState().setProgressVisible();
     }
 
-    public void setProgressGone(){
+    public void setProgressGone() {
         getViewState().setProgressGone();
     }
-    public void setLowOpacity(){
+
+    public void setLowOpacity() {
         getViewState().setLowOpacity();
     }
-    public void setHighOpacity(){
+
+    public void setHighOpacity() {
         getViewState().setHighOpacity();
+    }
+
+    public void saveImage() {
+        getViewState().saveImage();
     }
 }

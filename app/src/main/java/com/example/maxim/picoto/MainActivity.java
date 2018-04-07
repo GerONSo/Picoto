@@ -7,12 +7,15 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
@@ -103,9 +106,12 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        ConstraintLayout layout=findViewById(R.id.great_layout);
         switch(item.getItemId()){
             case R.id.save:
                 saveImage();
+                Snackbar snackbar = Snackbar.make(layout,"Successfuly saved",Snackbar.LENGTH_SHORT);
+                snackbar.show();
         }
         return super.onOptionsItemSelected(item);
     }

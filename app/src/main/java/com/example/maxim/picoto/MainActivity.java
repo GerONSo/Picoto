@@ -20,13 +20,14 @@ import android.view.View;
 
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.PresenterType;
 
 import java.io.File;
 import java.util.List;
 
 public class MainActivity extends MvpAppCompatActivity implements IMainView{
 
-    @InjectPresenter
+    @InjectPresenter(type = PresenterType.GLOBAL)
     MainPresenter presenter;
 
     RecyclerViewFragment recyclerViewFragment;

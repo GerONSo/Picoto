@@ -1,4 +1,4 @@
-package com.example.maxim.picoto;
+package com.example.maxim.picoto.helpers;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

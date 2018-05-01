@@ -4,7 +4,6 @@ package com.example.maxim.picoto;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,6 +13,11 @@ import android.view.ViewGroup;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.PresenterType;
+import com.example.maxim.picoto.helpers.ServerHelper;
+import com.example.maxim.picoto.interfaces.IRecyclerView;
+import com.example.maxim.picoto.presenters.MainPresenter;
+import com.example.maxim.picoto.presenters.RecyclerViewPresenter;
 
 import java.io.IOException;
 
@@ -22,7 +26,7 @@ public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyc
 
 
 
-    @InjectPresenter
+    @InjectPresenter(type = PresenterType.LOCAL)
     public RecyclerViewPresenter recyclerViewPresenter;
 
     private RecyclerView listView;

@@ -1,4 +1,4 @@
-package com.example.maxim.picoto;
+package com.example.maxim.picoto.utils;
 
 
 import android.content.Context;

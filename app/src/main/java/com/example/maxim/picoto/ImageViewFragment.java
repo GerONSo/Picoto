@@ -1,36 +1,32 @@
 package com.example.maxim.picoto;
 
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.PresenterType;
+import com.example.maxim.picoto.interfaces.IImageView;
+import com.example.maxim.picoto.presenters.ImageViewPresenter;
+import com.example.maxim.picoto.presenters.MainPresenter;
+import com.example.maxim.picoto.utils.FileUtils;
 
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.UUID;
-
-import static android.app.Activity.RESULT_OK;
 
 
 public class ImageViewFragment extends MvpAppCompatFragment implements IImageView {
@@ -70,8 +66,6 @@ public class ImageViewFragment extends MvpAppCompatFragment implements IImageVie
             presenter.setMainPresenter(mainPresenter);
             openGallery = BitmapFactory.decodeResource(getResources(), R.drawable.no_image);
             presenter.setImage(openGallery);
-
-
         }
 
         imageView = view.findViewById(R.id.image_view);
@@ -84,6 +78,12 @@ public class ImageViewFragment extends MvpAppCompatFragment implements IImageVie
             @Override
             public void onClick(View view) {
                 presenter.setCameraImage();
+            }
+        });
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.openGallery();
             }
         });
     }

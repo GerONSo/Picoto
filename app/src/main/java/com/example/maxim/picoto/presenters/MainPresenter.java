@@ -1,10 +1,13 @@
-package com.example.maxim.picoto;
+package com.example.maxim.picoto.presenters;
 
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.example.maxim.picoto.utils.FileUtils;
+import com.example.maxim.picoto.interfaces.IMainView;
 
 import java.io.File;
 
@@ -44,6 +47,10 @@ public class MainPresenter extends MvpPresenter<IMainView> {
         callback.onActivityResultListener(file);
     }
 
+    public void onGalleryImageReady() {
+        callback.onActivityResultListener(file);
+    }
+
     private File getTempPhotoFile() {
         File filesDir = FILES_DIR;
         return FileUtils.getNewImageFile(filesDir, "tmp_", ".jpg");
@@ -76,5 +83,15 @@ public class MainPresenter extends MvpPresenter<IMainView> {
 
     public void saveImage() {
         imageViewPresenter.saveImage();
+    }
+
+    public File getImageFile() {
+        return imageViewPresenter.getImageFile();
+    }
+
+    public void openGallery(OnActivityResultListener callback) {
+        this.callback = callback;
+        file = getTempPhotoFile();
+        getViewState().requestImageFromGallery(file);
     }
 }

@@ -1,18 +1,15 @@
-package com.example.maxim.picoto;
+package com.example.maxim.picoto.presenters;
 
 
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
-import android.graphics.drawable.BitmapDrawable;
-import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.ImageView;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.example.maxim.picoto.interfaces.IImageView;
+import com.example.maxim.picoto.utils.ImageUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,6 +21,7 @@ public class ImageViewPresenter extends MvpPresenter<IImageView> {
     private MainPresenter mainPresenter;
     private ImageView imageView;
     private Bitmap imageStyle;
+    private File imageFile;
 
     public void setImage(Bitmap bmp) {
         getViewState().setImage(bmp);
@@ -43,7 +41,7 @@ public class ImageViewPresenter extends MvpPresenter<IImageView> {
         } catch (IOException e) {
 
         }
-
+        imageFile = mainImage;
 
         imageStyle = bitmap;
         setImage(bitmap);
@@ -94,5 +92,18 @@ public class ImageViewPresenter extends MvpPresenter<IImageView> {
 
     public void saveImage() {
         getViewState().saveImage();
+    }
+
+    public File getImageFile() {
+        return imageFile;
+    }
+
+    public void openGallery() {
+        mainPresenter.openGallery(new MainPresenter.OnActivityResultListener() {
+            @Override
+            public void onActivityResultListener(File file) {
+                setImage(file);
+            }
+        });
     }
 }

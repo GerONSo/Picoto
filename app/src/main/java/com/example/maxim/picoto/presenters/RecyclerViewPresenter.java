@@ -1,13 +1,15 @@
-package com.example.maxim.picoto;
+package com.example.maxim.picoto.presenters;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.example.maxim.picoto.interfaces.IRecyclerView;
+import com.example.maxim.picoto.R;
+import com.example.maxim.picoto.RecyclerViewData;
 
 import java.util.ArrayList;
 
@@ -38,7 +40,7 @@ public class RecyclerViewPresenter extends MvpPresenter<IRecyclerView>{
             if(i<10) name+="0";
             name+=String.valueOf(i);
             list.add(getRecyclerViewData(getId(name), names[j], i));
-            Log.d("mytag",names[j]);
+            //Log.d("mytag",names[j]);
             j++;
         }
     }

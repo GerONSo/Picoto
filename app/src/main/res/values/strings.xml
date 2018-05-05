@@ -5,6 +5,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="share">share</string>
     <string name="save">save</string>
+    <string name="crop">crop</string>
     <string-array name="names">
         <item>Bicentennial Print</item>
         <item>Boy with Sweets</item>

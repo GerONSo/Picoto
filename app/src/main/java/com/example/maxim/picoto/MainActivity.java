@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.constraint.ConstraintLayout;
@@ -24,7 +25,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.PresenterType;
 import com.example.maxim.picoto.interfaces.IMainView;
 import com.example.maxim.picoto.presenters.MainPresenter;
-import com.example.maxim.picoto.utils.GalleryUtils;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -45,8 +46,9 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
     public static final int REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE = 777;
     public static final int REQUEST_PERMISSION_CAMERA = 666;
     public static File FILES_DIR;
+    private Uri cropResultUri;
     private static final String CONTENT_AUTHORITY = "com.example.maxim.picoto.fileprovider";
-    private GalleryUtils galleryUtils;
+
     private File imageTempFile;
 
     @Override
@@ -63,14 +65,14 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
 
 
     void checkPermissions() {
-        if(ContextCompat.checkSelfPermission(this,
+        if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE);
         }
-        if(ContextCompat.checkSelfPermission(this,
+        if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
@@ -126,6 +128,23 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                cropResultUri = result.getUri();
+                Bitmap bitmap = null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), cropResultUri);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                presenter.setImage(bitmap);
+
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
+        }
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_CAMERA:
@@ -174,6 +193,9 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
                 String imagePath = presenter.getImageFile().getAbsolutePath();
                 createInstagramIntent(imagePath);
                 break;
+            case R.id.crop:
+                onSelectImageClick();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -191,4 +213,15 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
         share.putExtra(Intent.EXTRA_STREAM, uri);
         startActivity(Intent.createChooser(share, "Share to"));
     }
+
+    public void onSelectImageClick() {
+        startCropImageActivity(Uri.fromFile(presenter.getImageFile()));
+    }
+
+    private void startCropImageActivity(Uri imageUri) {
+        CropImage.activity(imageUri)
+                .start(this);
+    }
+
+
 }

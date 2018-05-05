@@ -2,6 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/crop"
+        app:showAsAction="ifRoom"
+        android:title="@string/crop"
+        android:icon="@drawable/crop_white"
+        />
+    <item
         android:id="@+id/save"
         android:icon="@drawable/save_white"
         app:showAsAction="ifRoom"

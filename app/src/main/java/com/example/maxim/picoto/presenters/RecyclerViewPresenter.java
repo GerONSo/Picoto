@@ -46,12 +46,17 @@ public class RecyclerViewPresenter extends MvpPresenter<IRecyclerView>{
     }
 
     private RecyclerViewData getRecyclerViewData(int bitmapId,String name,int styleNumber){
-        return new RecyclerViewData(BitmapFactory.decodeResource(resources,bitmapId),name,styleNumber);
+        return new RecyclerViewData(BitmapFactory.decodeResource(resources, bitmapId), BitmapFactory.decodeResource(resources, R.id.cross), name, styleNumber);
     }
 
     public void setResources(Resources resources) {
         this.resources = resources;
     }
+
+    public Resources getResources() {
+        return resources;
+    }
+
     private int getId(String s){
         return resources.getIdentifier(s,"drawable",context.getPackageName());
     }
@@ -67,5 +72,9 @@ public class RecyclerViewPresenter extends MvpPresenter<IRecyclerView>{
     public void setMainPresenter(MainPresenter mainPresenter) {
         this.mainPresenter = mainPresenter;
         mainPresenter.setRecyclerViewPresenter(this);
+    }
+
+    public void redrawRecyclerView() {
+        getViewState().redrawRecyclerView();
     }
 }

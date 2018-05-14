@@ -97,4 +97,11 @@ public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyc
         this.mainPresenter.setRecyclerViewPresenter(recyclerViewPresenter);
     }
 
+    public RecyclerViewAdapter getAdapter() {
+        return adapter;
+    }
+
+    public void redrawRecyclerView() {
+        adapter.notifyDataSetChanged();
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.maxim.picoto.interfaces;
 
 import com.arellomobile.mvp.MvpView;
+import com.arellomobile.mvp.viewstate.strategy.SkipStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 
 /**
@@ -8,5 +9,6 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
  */
 
 public interface IRecyclerView extends MvpView{
-
+    @StateStrategyType(SkipStrategy.class)
+    void redrawRecyclerView();
 }

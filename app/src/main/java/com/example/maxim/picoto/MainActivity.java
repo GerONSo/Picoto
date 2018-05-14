@@ -14,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,6 +56,11 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //toolbar.setLogo(R.drawable.picoto_logo);
+        toolbar.setContentInsetsAbsolute(0, 0);
 
         if (savedInstanceState == null) {
             FILES_DIR = getFilesDir();

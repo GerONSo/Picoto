@@ -24,7 +24,7 @@
         app:contentInsetStart="0dp"
         app:contentInsetStartWithNavigation="0dp"
         android:paddingEnd="7dp"
-        app:logo="@drawable/picoto_logo"/>
+        app:logo="@drawable/logo"/>
     <FrameLayout
         android:id="@+id/image_frame"
         android:layout_width="0dp"

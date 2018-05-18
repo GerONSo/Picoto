@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/CropStyle"/>
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.maxim.picoto.fileprovider"

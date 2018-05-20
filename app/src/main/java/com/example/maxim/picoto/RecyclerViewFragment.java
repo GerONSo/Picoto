@@ -21,6 +21,8 @@ import com.example.maxim.picoto.presenters.RecyclerViewPresenter;
 
 import java.io.IOException;
 
+import butterknife.BindView;
+
 
 public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyclerView {
 
@@ -29,7 +31,7 @@ public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyc
     @InjectPresenter(type = PresenterType.LOCAL)
     public RecyclerViewPresenter recyclerViewPresenter;
 
-    private RecyclerView listView;
+    @BindView(R.id.listView) private RecyclerView listView;
     private RecyclerViewAdapter adapter;
     private MainPresenter mainPresenter;
     private Bitmap styleImage;
@@ -59,7 +61,7 @@ public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyc
         //recyclerViewPresenter.setMainPresenter(mainPresenter);
 
         Log.d("mytag", String.valueOf(recyclerViewPresenter.getList().get(0).getName()));
-        listView=view.findViewById(R.id.listView);
+
         listView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
 
         adapter=new RecyclerViewAdapter(this, recyclerViewPresenter, new RecyclerViewAdapter.OnStyleSelected() {

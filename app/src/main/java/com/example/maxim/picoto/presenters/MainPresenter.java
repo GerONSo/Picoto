@@ -94,4 +94,8 @@ public class MainPresenter extends MvpPresenter<IMainView> {
         file = getTempPhotoFile();
         getViewState().requestImageFromGallery(file);
     }
+
+    public void onNullPointerExceptionOccured() {
+        getViewState().onNullPointerExceptionOccured();
+    }
 }

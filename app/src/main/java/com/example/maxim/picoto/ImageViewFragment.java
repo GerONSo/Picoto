@@ -1,6 +1,7 @@
 package com.example.maxim.picoto;
 
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -29,6 +30,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 public class ImageViewFragment extends MvpAppCompatFragment implements IImageView {
@@ -40,9 +42,9 @@ public class ImageViewFragment extends MvpAppCompatFragment implements IImageVie
     private MainPresenter mainPresenter;
 
 
-    @BindView(R.id.image_view) private ImageView imageView;
-    @BindView(R.id.progress_bar) private ProgressBar progressBar;
-    @BindView(R.id.camera_button) private FloatingActionButton cameraButton;
+    @BindView(R.id.image_view) public ImageView imageView;
+    @BindView(R.id.progress_bar) public ProgressBar progressBar;
+    @BindView(R.id.camera_button) public FloatingActionButton cameraButton;
 
     public static final int REQUEST_IMAGE_CAPTURE = 1;
 
@@ -58,7 +60,10 @@ public class ImageViewFragment extends MvpAppCompatFragment implements IImageVie
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_image_view, container, false);
+        //ButterKnife.bind(this);
+        View view = inflater.inflate(R.layout.fragment_image_view, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override

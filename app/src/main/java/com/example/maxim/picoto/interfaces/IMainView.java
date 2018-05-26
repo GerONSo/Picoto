@@ -25,4 +25,6 @@ public interface IMainView extends MvpView{
     void setImage(Bitmap image);
     @StateStrategyType(OneExecutionStateStrategy.class)
     void createFileByContentUri(Uri src, File dst);
+    @StateStrategyType(SkipStrategy.class)
+    void onNullPointerExceptionOccured();
 }

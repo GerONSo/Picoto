@@ -27,6 +27,11 @@ public class ImageViewPresenter extends MvpPresenter<IImageView> {
         getViewState().setImage(bmp);
     }
 
+    public void setCroppedImage(Bitmap bmp) {
+        imageStyle = bmp;
+        setImage(bmp);
+    }
+
 
     public void setImage(File file) {
         File mainImage;

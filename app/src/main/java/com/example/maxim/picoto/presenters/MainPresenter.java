@@ -98,4 +98,12 @@ public class MainPresenter extends MvpPresenter<IMainView> {
     public void onNullPointerExceptionOccured() {
         getViewState().onNullPointerExceptionOccured();
     }
+
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+    public void setCroppedImage(Bitmap bmp) {
+        imageViewPresenter.setCroppedImage(bmp);
+    }
 }

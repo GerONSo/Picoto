@@ -147,8 +147,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-                presenter.setImage(bitmap);
+                presenter.setCroppedImage(bitmap);
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();

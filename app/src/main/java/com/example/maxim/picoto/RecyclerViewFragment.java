@@ -4,6 +4,8 @@ package com.example.maxim.picoto;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -22,6 +24,9 @@ import com.example.maxim.picoto.presenters.RecyclerViewPresenter;
 
 import java.io.IOException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyclerView {
 
@@ -30,7 +35,7 @@ public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyc
     @InjectPresenter(type = PresenterType.LOCAL)
     public RecyclerViewPresenter recyclerViewPresenter;
 
-    private RecyclerView listView;
+    @BindView(R.id.listView) public RecyclerView listView;
     private RecyclerViewAdapter adapter;
     private MainPresenter mainPresenter;
     private Bitmap styleImage;
@@ -47,11 +52,13 @@ public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyc
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_recycler_view, container, false);
+        View view = inflater.inflate(R.layout.fragment_recycler_view, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         if(savedInstanceState==null)
             recyclerViewPresenter.setMainPresenter(mainPresenter);
         recyclerViewPresenter.setResources(getResources());
@@ -60,13 +67,20 @@ public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyc
         //recyclerViewPresenter.setMainPresenter(mainPresenter);
 
         Log.d("mytag", String.valueOf(recyclerViewPresenter.getList().get(0).getName()));
-        listView=view.findViewById(R.id.listView);
+
         listView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
 
         adapter=new RecyclerViewAdapter(this, recyclerViewPresenter, new RecyclerViewAdapter.OnStyleSelected() {
             @Override
             public void onStyleSelected(int position) {
                 styleImage=recyclerViewPresenter.getImage();
+                if(styleImage == null) {
+                    ConstraintLayout layout = view.findViewById(R.id.recycler_view_fragment);
+                    Snackbar snackbar = Snackbar.make(layout, "Select or make photo", Snackbar.LENGTH_SHORT);
+                    snackbar.show();
+                    //mainPresenter.onNullPointerExceptionOccured();
+                    return;
+                }
                 mainPresenter.setProgressVisible();
                 mainPresenter.setHighOpacity();
                 HttpServerHelper.sendImage(styleImage, position, new ServerHelper.OnImageResult() {

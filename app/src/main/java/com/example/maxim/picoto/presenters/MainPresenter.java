@@ -94,4 +94,16 @@ public class MainPresenter extends MvpPresenter<IMainView> {
         file = getTempPhotoFile();
         getViewState().requestImageFromGallery(file);
     }
+
+    public void onNullPointerExceptionOccured() {
+        getViewState().onNullPointerExceptionOccured();
+    }
+
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+    public void setCroppedImage(Bitmap bmp) {
+        imageViewPresenter.setCroppedImage(bmp);
+    }
 }

@@ -35,6 +35,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import butterknife.ButterKnife;
+
 public class MainActivity extends MvpAppCompatActivity implements IMainView {
 
     @InjectPresenter(type = PresenterType.GLOBAL)
@@ -57,6 +59,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -145,8 +148,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-                presenter.setImage(bitmap);
+                presenter.setCroppedImage(bitmap);
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
@@ -230,5 +232,9 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
                 .start(this);
     }
 
-
+    @Override
+    public void onNullPointerExceptionOccured() {
+        ConstraintLayout layout = findViewById(R.id.great_layout);
+        Snackbar snackbar = Snackbar.make(layout, "Select or make photo", Snackbar.LENGTH_SHORT);
+    }
 }

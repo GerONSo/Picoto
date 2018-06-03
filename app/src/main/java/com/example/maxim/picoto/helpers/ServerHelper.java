@@ -76,9 +76,6 @@ public class ServerHelper {
                 Log.d("style", String.valueOf(image.getByteCount()));
                 Socket socket=new Socket(ip,port);
                 ObjectOutputStream oos=new ObjectOutputStream(socket.getOutputStream());
-
-
-
                 int i;
                 oos.writeObject(styleType);
                 while(true) {
@@ -116,6 +113,8 @@ public class ServerHelper {
 
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
+            } catch(NullPointerException e) {
+
             }
             Log.d("returnImage", String.valueOf(imageResult));
             return imageResult;

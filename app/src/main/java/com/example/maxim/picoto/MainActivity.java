@@ -2,6 +2,7 @@ package com.example.maxim.picoto;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -213,7 +214,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
     private void createInstagramIntent(String mediaPath) {
         Log.d("mylog", mediaPath);
         Intent share = new Intent(Intent.ACTION_SEND);
-        share.setType("*/image");
+        share.setType("image/*");
         File media = new File(mediaPath);
         Uri uri = Uri.fromFile(media);
         share.putExtra(Intent.EXTRA_STREAM, uri);

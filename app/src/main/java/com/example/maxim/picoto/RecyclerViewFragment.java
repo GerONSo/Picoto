@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.PresenterType;
+import com.example.maxim.picoto.helpers.HttpServerHelper;
 import com.example.maxim.picoto.helpers.ServerHelper;
 import com.example.maxim.picoto.interfaces.IRecyclerView;
 import com.example.maxim.picoto.presenters.MainPresenter;
@@ -68,21 +69,17 @@ public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyc
                 styleImage=recyclerViewPresenter.getImage();
                 mainPresenter.setProgressVisible();
                 mainPresenter.setHighOpacity();
-                try {
-                    ServerHelper.sendImage(styleImage, position, new ServerHelper.OnImageResult() {
-                        @Override
-                        public void onImageResult(Bitmap image) {
-                            mainPresenter.setProgressGone();
-                            mainPresenter.setLowOpacity();
-                            Log.d("heii","here");
-                            mainPresenter.setImage(image);
-                        }
-                    });
+                HttpServerHelper.sendImage(styleImage, position, new ServerHelper.OnImageResult() {
+                    @Override
+                    public void onImageResult(Bitmap image) {
+                        mainPresenter.setProgressGone();
+                        mainPresenter.setLowOpacity();
+                        Log.d("heii","here");
+                        mainPresenter.setImage(image);
+                    }
+                });
 
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
         });
         listView.setAdapter(adapter);

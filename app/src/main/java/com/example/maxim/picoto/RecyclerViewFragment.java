@@ -28,18 +28,23 @@ public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyc
 
     @InjectPresenter(type = PresenterType.LOCAL)
     public RecyclerViewPresenter recyclerViewPresenter;
-
     @BindView(R.id.listView) public RecyclerView listView;
+
     private RecyclerViewAdapter adapter;
-    private MainPresenter mainPresenter;
     private File styleImageFile;
     private static boolean isImageSetted = true;
+    private MainPresenter mainPresenter;
 
     public RecyclerViewFragment() {}
 
-    public static RecyclerViewFragment newInstance(){
+    public static RecyclerViewFragment newInstance() {
         return new RecyclerViewFragment();
     }
+
+    public void setMainPresenter(MainPresenter mainPresenter) {
+        this.mainPresenter = mainPresenter;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -50,14 +55,17 @@ public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyc
 
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
-        if(savedInstanceState==null)
-            recyclerViewPresenter.setMainPresenter(mainPresenter);
+        if(savedInstanceState == null) {
+            if(mainPresenter != null) {
+                recyclerViewPresenter.setRecyclerViewPresenter(mainPresenter);
+            }
+        }
         recyclerViewPresenter.setResources(getResources());
         recyclerViewPresenter.setContext(getContext());
         recyclerViewPresenter.setList();
         Log.d("name", String.valueOf(recyclerViewPresenter.getList().get(0).getName()));
         listView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
-        adapter=new RecyclerViewAdapter(this, recyclerViewPresenter, new RecyclerViewAdapter.OnStyleSelected() {
+        adapter=new RecyclerViewAdapter(view, this, recyclerViewPresenter, new RecyclerViewAdapter.OnStyleSelected() {
             @Override
             public void onStyleSelected(int position) {
                 styleImageFile = recyclerViewPresenter.getImageFile();
@@ -67,18 +75,18 @@ public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyc
                     snackbar.show();
                     return;
                 }
-                mainPresenter.setProgressVisible();
-                mainPresenter.setHighOpacity();
+                recyclerViewPresenter.setProgressVisible();
+                recyclerViewPresenter.setHighOpacity();
                 isImageSetted = false;
                 HttpServerHelper.sendImage(styleImageFile, position, new HttpServerHelper.OnImageResult() {
                     @Override
                     public void onImageResult(Bitmap resultImage) {
 
-                        mainPresenter.setProgressGone();
-                        mainPresenter.setLowOpacity();
+                        recyclerViewPresenter.setProgressGone();
+                        recyclerViewPresenter.setLowOpacity();
                         Log.d("heii","here");
                         try {
-                            mainPresenter.setImage(resultImage);
+                            recyclerViewPresenter.setImage(resultImage);
                             isImageSetted = true;
                         } catch (NullPointerException e) {
                             ConstraintLayout layout = view.findViewById(R.id.recycler_view_fragment);
@@ -98,11 +106,6 @@ public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyc
         return recyclerViewPresenter;
     }
 
-    public void setMainPresenter(MainPresenter mainPresenter) {
-        this.mainPresenter = mainPresenter;
-        this.mainPresenter.setRecyclerViewPresenter(recyclerViewPresenter);
-    }
-
     public void redrawRecyclerView() {
         adapter.notifyDataSetChanged();
     }
@@ -110,4 +113,6 @@ public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyc
     public static boolean isImageSetted() {
         return isImageSetted;
     }
+
+
 }

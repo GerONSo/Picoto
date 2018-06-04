@@ -97,14 +97,11 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
         recyclerViewFragment = RecyclerViewFragment.newInstance();
         imageViewFragment.setMainPresenter(presenter);
         recyclerViewFragment.setMainPresenter(presenter);
-
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.image_frame, imageViewFragment)
                 .add(R.id.recycler_frame, recyclerViewFragment)
                 .commit();
-
-
     }
 
     @Override

@@ -28,17 +28,16 @@ public class ImageViewPresenter extends MvpPresenter<IImageView> {
     private File imageFile;
     private View imageFragmentView;
 
-    public void setImage(Bitmap bmp) {
+    public void setImage(Bitmap bmp) {              // Set image to ImageView by Bitmap
         getViewState().setImage(bmp);
     }
 
-    public void setCroppedImage(Bitmap bmp) {
+    public void setCroppedImage(Bitmap bmp) {       // Set cropped image to ImageView
         imageStyle = bmp;
         setImage(bmp);
     }
 
-
-    public void setImage(File file) {
+    public void setImage(File file) {               // Set image to ImageView by file
         File mainImage;
         mainImage = file;
         Point size = new Point();
@@ -49,32 +48,42 @@ public class ImageViewPresenter extends MvpPresenter<IImageView> {
         try {
             bitmap = ImageUtils.getScaledBitmap(mainImage, maxSide, maxSide);
         } catch (IOException e) {
-            ConstraintLayout layout = imageFragmentView.findViewById(R.id.recycler_view_fragment);
+            ConstraintLayout layout = imageFragmentView.findViewById(R.id.image_view_fragment);
             Snackbar snackbar = Snackbar.make(layout, "Something went wrong :(", Snackbar.LENGTH_SHORT);
             snackbar.show();
         }
         imageFile = mainImage;
-
         imageStyle = bitmap;
         setImage(bitmap);
     }
 
     public void setCameraImage() {
-        //Log.d("tag", String.valueOf(mainPresenter));
-        mainPresenter.getCameraImage(new MainPresenter.OnActivityResultListener() {
+        mainPresenter.getCameraImage(new MainPresenter.OnActivityResultListener() {         // Starting camera activity
             @Override
             public void onActivityResultListener(File file) {
                 setImage(file);
             }
         });
-
     }
 
-    public void setMainPresenter(MainPresenter mainPresenter) {
+    public void openGallery() {                                                          // Starting gallery activity
+        mainPresenter.openGallery(new MainPresenter.OnActivityResultListener() {
+            @Override
+            public void onActivityResultListener(File file) {
+                setImage(file);
+            }
+        });
+    }
 
-        this.mainPresenter = mainPresenter;
+    //  Just getters & setters lower
+
+    public void setImageViewPresenter(MainPresenter mainPresenter) {
         mainPresenter.setImageViewPresenter(this);
+        this.setMainPresenter(mainPresenter);
+    }
 
+    public void setMainPresenter(MainPresenter presenter) {
+        mainPresenter = presenter;
     }
 
     public void setImageView(ImageView imageView) {
@@ -108,15 +117,6 @@ public class ImageViewPresenter extends MvpPresenter<IImageView> {
 
     public File getImageFile() {
         return imageFile;
-    }
-
-    public void openGallery() {
-        mainPresenter.openGallery(new MainPresenter.OnActivityResultListener() {
-            @Override
-            public void onActivityResultListener(File file) {
-                setImage(file);
-            }
-        });
     }
 
     public void setImageFragmentView(View imageFragmentView) {

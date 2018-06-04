@@ -38,12 +38,17 @@ public class ImageViewFragment extends MvpAppCompatFragment implements IImageVie
     @BindView(R.id.progress_bar) public ProgressBar progressBar;
     @BindView(R.id.camera_button) public FloatingActionButton cameraButton;
 
-    private MainPresenter mainPresenter;
     private View imageFragmentView;
+    private MainPresenter mainPresenter;
+
     public ImageViewFragment() {}
 
     public static ImageViewFragment newInstance() {
         return new ImageViewFragment();
+    }
+
+    public void setMainPresenter(MainPresenter mainPresenter) {
+        this.mainPresenter = mainPresenter;
     }
 
     @Override
@@ -59,7 +64,9 @@ public class ImageViewFragment extends MvpAppCompatFragment implements IImageVie
         imageFragmentView = view;
         Bitmap openGallery = null;
         if (savedInstanceState == null) {
-            presenter.setMainPresenter(mainPresenter);
+            if(mainPresenter != null) {
+                presenter.setImageViewPresenter(mainPresenter);
+            }
             openGallery = BitmapFactory.decodeResource(getResources(), R.drawable.no_image);
             presenter.setImage(openGallery);
         }
@@ -87,11 +94,6 @@ public class ImageViewFragment extends MvpAppCompatFragment implements IImageVie
     @Override
     public void setImage(Bitmap bmp) {
         imageView.setImageBitmap(bmp);
-    }
-
-    public void setMainPresenter(MainPresenter mainPresenter) {
-        this.mainPresenter = mainPresenter;
-        this.mainPresenter.setImageViewPresenter(presenter);
     }
 
     public ImageView getImageView() {

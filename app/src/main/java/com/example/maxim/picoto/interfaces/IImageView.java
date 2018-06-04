@@ -9,6 +9,7 @@ import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
 import com.arellomobile.mvp.viewstate.strategy.SkipStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
+import com.example.maxim.picoto.presenters.MainPresenter;
 
 public interface IImageView extends MvpView{
     @StateStrategyType(AddToEndSingleStrategy.class)

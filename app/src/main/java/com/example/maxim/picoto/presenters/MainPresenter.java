@@ -37,7 +37,7 @@ public class MainPresenter extends MvpPresenter<IMainView> {
         getViewState().createFragment();
     }
 
-    public void getCameraImage(OnActivityResultListener listener) {
+    public void getCameraImage(OnActivityResultListener listener) {    // Start camera activity
         callback = listener;
         file = getTempPhotoFile();
         getViewState().requestImageFromCamera(file);
@@ -51,10 +51,18 @@ public class MainPresenter extends MvpPresenter<IMainView> {
         callback.onActivityResultListener(file);
     }
 
-    private File getTempPhotoFile() {
+    private File getTempPhotoFile() {                          // Create Temp File
         File filesDir = FILES_DIR;
         return FileUtils.getNewImageFile(filesDir, "tmp_", ".jpg");
     }
+
+    public void openGallery(OnActivityResultListener callback) {    // Start gallery activity
+        this.callback = callback;
+        file = getTempPhotoFile();
+        getViewState().requestImageFromGallery(file);
+    }
+
+    //  Just getters & setters lower
 
     public Bitmap getImage() {
         return imageViewPresenter.getImage();
@@ -89,15 +97,7 @@ public class MainPresenter extends MvpPresenter<IMainView> {
         return imageViewPresenter.getImageFile();
     }
 
-    public void openGallery(OnActivityResultListener callback) {
-        this.callback = callback;
-        file = getTempPhotoFile();
-        getViewState().requestImageFromGallery(file);
-    }
 
-    public void onNullPointerExceptionOccured() {
-        getViewState().onNullPointerExceptionOccured();
-    }
 
     public void setFile(File file) {
         this.file = file;

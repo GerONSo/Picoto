@@ -26,15 +26,16 @@ public class HttpServerHelper {
 
     private static Bitmap resultImage;
     private static OnImageResult callback;
+    public static final String BASE_URL = "http://194.87.103.212:4567/";
 
-    public static void sendImage(File file, int styleType, OnImageResult c) {
+    public static void sendImage(File file, int styleType, OnImageResult c) {    //  Sends image on server via Retrofit
 
         callback = c;
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://194.87.103.212:4567/")
+                .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(getHttpClient())
                 .build();
@@ -42,15 +43,15 @@ public class HttpServerHelper {
         MultipartBody.Part filePart = MultipartBody.Part.
                 createFormData("file", file.getName(),
                         RequestBody.create(MediaType.parse("image/*"), file));
-        Call<String> call = api.upload(filePart, String.valueOf(styleType));
+        Call<String> call = api.upload(filePart, String.valueOf(styleType));          //   Sending...
 
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.body() != null) {
-                    String s = response.body();
-                    byte[] bytes = Base64.decode(s, Base64.DEFAULT);
-                    resultImage = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    String s = response.body();                                                     //   Getting image in Base64,
+                    byte[] bytes = Base64.decode(s, Base64.DEFAULT);                                //   decoding it,
+                    resultImage = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);      //   translating to Bitmap
                     callback.onImageResult(resultImage);
                 }
             }
@@ -62,7 +63,7 @@ public class HttpServerHelper {
         });
     }
 
-    private static OkHttpClient getHttpClient() {
+    private static OkHttpClient getHttpClient() {                           // Setting HTTP timeouts
         final OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .readTimeout(5, TimeUnit.MINUTES)
                 .connectTimeout(5, TimeUnit.MINUTES)

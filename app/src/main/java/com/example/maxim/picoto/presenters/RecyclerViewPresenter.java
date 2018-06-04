@@ -21,23 +21,22 @@ public class RecyclerViewPresenter extends MvpPresenter<IRecyclerView>{
     private Resources resources;
     private Context context;
     private MainPresenter mainPresenter;
+    private int currentPosition = -1;
 
     public ArrayList<RecyclerViewData> getList() {
         return list;
     }
 
-    public void setList() {
+    public void setList() {         // Loading images for RecyclerView from /res/drawable folder
         list=new ArrayList<>();
         String names[]=resources.getStringArray(R.array.names);
         int j=0;
         for(int i=0;i<31;i++) {
             if(i==11 || i==8) continue;
-
             String name="p";
             if(i<10) name+="0";
             name+=String.valueOf(i);
             list.add(getRecyclerViewData(getId(name), names[j], i));
-            //Log.d("mytag",names[j]);
             j++;
         }
     }
@@ -66,9 +65,13 @@ public class RecyclerViewPresenter extends MvpPresenter<IRecyclerView>{
         return mainPresenter.getImage();
     }
 
-    public void setMainPresenter(MainPresenter mainPresenter) {
-        this.mainPresenter = mainPresenter;
+    public void setRecyclerViewPresenter(MainPresenter mainPresenter) {
         mainPresenter.setRecyclerViewPresenter(this);
+        this.setMainPresenter(mainPresenter);
+    }
+
+    public void setMainPresenter(MainPresenter presenter) {
+        mainPresenter = presenter;
     }
 
     public void redrawRecyclerView() {
@@ -77,5 +80,33 @@ public class RecyclerViewPresenter extends MvpPresenter<IRecyclerView>{
 
     public File getImageFile() {
         return mainPresenter.getImageFile();
+    }
+
+    public int getCurrentPosition() {
+        return currentPosition;
+    }
+
+    public void setCurrentPosition(int currentPosition) {
+        this.currentPosition = currentPosition;
+    }
+
+    public void setProgressVisible() {
+        mainPresenter.setProgressVisible();
+    }
+
+    public void setHighOpacity() {
+        mainPresenter.setHighOpacity();
+    }
+
+    public void setProgressGone() {
+        mainPresenter.setProgressGone();
+    }
+
+    public void setLowOpacity() {
+        mainPresenter.setLowOpacity();
+    }
+
+    public void setImage(Bitmap image) {
+        mainPresenter.setImage(image);
     }
 }

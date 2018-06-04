@@ -67,7 +67,7 @@ public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyc
         listView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
         adapter=new RecyclerViewAdapter(view, this, recyclerViewPresenter, new RecyclerViewAdapter.OnStyleSelected() {
             @Override
-            public void onStyleSelected(int position) {
+            public void onStyleSelected(int position) {         // Handling style selected
                 styleImageFile = recyclerViewPresenter.getImageFile();
                 if(styleImageFile == null) {
                     ConstraintLayout layout = view.findViewById(R.id.recycler_view_fragment);
@@ -80,7 +80,7 @@ public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyc
                 isImageSetted = false;
                 HttpServerHelper.sendImage(styleImageFile, position, new HttpServerHelper.OnImageResult() {
                     @Override
-                    public void onImageResult(Bitmap resultImage) {
+                    public void onImageResult(Bitmap resultImage) {     // Send image for stylization
 
                         recyclerViewPresenter.setProgressGone();
                         recyclerViewPresenter.setLowOpacity();

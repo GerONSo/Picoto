@@ -1,13 +1,8 @@
-package com.example.maxim.picoto;
+package com.example.maxim.picoto.data;
 
 import android.graphics.Bitmap;
 
-/**
- * Created by maxim on 23.03.18.
- */
-
 public class RecyclerViewData {
-
 
     private Bitmap image;
     private Bitmap crossed;
@@ -28,12 +23,6 @@ public class RecyclerViewData {
 
     public int getStyleNumber() {
         return styleNumber;
-    }
-
-    public RecyclerViewData(Bitmap image, String name, int styleNumber) {
-        this.image = image;
-        this.name = name;
-        this.styleNumber = styleNumber;
     }
 
     public RecyclerViewData(Bitmap image, Bitmap crossed, String name, int styleNumber) {

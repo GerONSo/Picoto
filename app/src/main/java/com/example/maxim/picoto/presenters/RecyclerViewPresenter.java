@@ -9,13 +9,13 @@ import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 import com.example.maxim.picoto.interfaces.IRecyclerView;
 import com.example.maxim.picoto.R;
-import com.example.maxim.picoto.RecyclerViewData;
+import com.example.maxim.picoto.data.RecyclerViewData;
 
 import java.io.File;
 import java.util.ArrayList;
 
 @InjectViewState
-public class RecyclerViewPresenter extends MvpPresenter<IRecyclerView>{
+public class RecyclerViewPresenter extends MvpPresenter<IRecyclerView> {
 
     private ArrayList<RecyclerViewData> list;
     private Resources resources;
@@ -28,22 +28,29 @@ public class RecyclerViewPresenter extends MvpPresenter<IRecyclerView>{
     }
 
     public void setList() {         // Loading images for RecyclerView from /res/drawable folder
-        list=new ArrayList<>();
-        String names[]=resources.getStringArray(R.array.names);
-        int j=0;
-        for(int i=0;i<31;i++) {
-            if(i==11 || i==8) continue;
-            String name="p";
-            if(i<10) name+="0";
-            name+=String.valueOf(i);
+        list = new ArrayList<>();
+        String names[] = resources.getStringArray(R.array.names);
+        int j = 0;
+        for (int i = 0; i < 31; i++) {
+            if (i == 11 || i == 8) continue;
+            String name = "p";
+            if (i < 10) name += "0";
+            name += String.valueOf(i);
             list.add(getRecyclerViewData(getId(name), names[j], i));
             j++;
         }
     }
 
-    private RecyclerViewData getRecyclerViewData(int bitmapId,String name,int styleNumber){
-        return new RecyclerViewData(BitmapFactory.decodeResource(resources, bitmapId), BitmapFactory.decodeResource(resources, R.id.cross), name, styleNumber);
+    private RecyclerViewData getRecyclerViewData(int bitmapId, String name, int styleNumber) {      // Subsidiary method
+        return new RecyclerViewData(BitmapFactory.decodeResource(resources, bitmapId),              // to create
+                BitmapFactory.decodeResource(resources, R.id.cross), name, styleNumber);            // RecyclerViewData
     }
+
+    public void redrawRecyclerView() {
+        getViewState().redrawRecyclerView();
+    }
+
+    //  Just getters & setters lower
 
     public void setResources(Resources resources) {
         this.resources = resources;
@@ -53,15 +60,15 @@ public class RecyclerViewPresenter extends MvpPresenter<IRecyclerView>{
         return resources;
     }
 
-    private int getId(String s){
-        return resources.getIdentifier(s,"drawable",context.getPackageName());
+    private int getId(String s) {
+        return resources.getIdentifier(s, "drawable", context.getPackageName());
     }
 
     public void setContext(Context context) {
         this.context = context;
     }
 
-    public Bitmap getImage(){
+    public Bitmap getImage() {
         return mainPresenter.getImage();
     }
 
@@ -72,10 +79,6 @@ public class RecyclerViewPresenter extends MvpPresenter<IRecyclerView>{
 
     public void setMainPresenter(MainPresenter presenter) {
         mainPresenter = presenter;
-    }
-
-    public void redrawRecyclerView() {
-        getViewState().redrawRecyclerView();
     }
 
     public File getImageFile() {

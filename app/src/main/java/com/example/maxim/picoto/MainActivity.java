@@ -50,9 +50,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
     public static final int REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE = 777;
     public static final int REQUEST_PERMISSION_CAMERA = 666;
     public static File FILES_DIR;
-    private Uri cropResultUri;
     private static final String CONTENT_AUTHORITY = "com.example.maxim.picoto.fileprovider";
-
     private File imageTempFile;
 
     @Override
@@ -63,9 +61,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        //toolbar.setLogo(R.drawable.picoto_logo);
         toolbar.setContentInsetsAbsolute(0, 0);
-
         if (savedInstanceState == null) {
             FILES_DIR = getFilesDir();
             presenter.createFragment();
@@ -74,7 +70,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
     }
 
 
-    void checkPermissions() {
+    void checkPermissions() {   // Dynamic permissions
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -92,7 +88,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
     }
 
     @Override
-    public void createFragment() {
+    public void createFragment() {      // Create fragments
         imageViewFragment = ImageViewFragment.newInstance();
         recyclerViewFragment = RecyclerViewFragment.newInstance();
         imageViewFragment.setMainPresenter(presenter);
@@ -105,7 +101,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
     }
 
     @Override
-    public void requestImageFromCamera(File file) {
+    public void requestImageFromCamera(File file) {     //  Starting camera activity
 
         Uri contentUri = FileProvider.getUriForFile(this, CONTENT_AUTHORITY, file);
 
@@ -116,7 +112,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
     }
 
     @Override
-    public void requestImageFromGallery(File file) {
+    public void requestImageFromGallery(File file) {       // Starting gallery activity
         Intent pickIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
                 .setType("image/*");
         imageTempFile = file;
@@ -124,21 +120,11 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
     }
 
     @Override
-    public void getTempPhotoFile() {
-
-    }
-
-    @Override
-    public void setImage(Bitmap image) {
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {     // Handle camera or gallery result
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
-                cropResultUri = result.getUri();
+                Uri cropResultUri = result.getUri();
                 Bitmap bitmap = null;
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), cropResultUri);
@@ -167,7 +153,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
     }
 
     @Override
-    public void createFileByContentUri(Uri src, File dst) {
+    public void createFileByContentUri(Uri src, File dst) {         // Create file by content uri :thinking:
         try (InputStream in = getContentResolver().openInputStream(src)) {
             try (OutputStream out = new FileOutputStream(dst)) {
                 byte[] buf = new byte[1024];
@@ -185,13 +171,13 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) {         // Inflating menu
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item) {       // Handling menu clicks
         ConstraintLayout layout = findViewById(R.id.great_layout);
         switch (item.getItemId()) {
             case R.id.save:
@@ -210,12 +196,12 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
         return super.onOptionsItemSelected(item);
     }
 
-    private void saveImage() {
+    private void saveImage() {      // Save image
         presenter.saveImage();
     }
 
-    private void createInstagramIntent(String mediaPath) {
-        Log.d("mylog", mediaPath);
+    private void createInstagramIntent(String mediaPath) {  // Share Intent
+        Log.d("mediaPath", mediaPath);
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("image/*");
         File media = new File(mediaPath);
@@ -224,17 +210,17 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
         startActivity(Intent.createChooser(share, "Share to"));
     }
 
-    public void onSelectImageClick() {
+    public void onSelectImageClick() {          // Handling Crop Button click
         startCropImageActivity(Uri.fromFile(presenter.getImageFile()));
     }
 
-    private void startCropImageActivity(Uri imageUri) {
+    private void startCropImageActivity(Uri imageUri) {     // Start crop activity
         CropImage.activity(imageUri)
                 .start(this);
     }
 
     @Override
-    public void onNullPointerExceptionOccured() {
+    public void onNullPointerExceptionOccured() {       // Handling NullPointerException when nothing was chosen
         ConstraintLayout layout = findViewById(R.id.great_layout);
         Snackbar snackbar = Snackbar.make(layout, "Select or make photo", Snackbar.LENGTH_SHORT);
     }

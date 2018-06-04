@@ -91,32 +91,7 @@ public class ImageViewFragment extends MvpAppCompatFragment implements IImageVie
         });
     }
 
-    @Override
-    public void setImage(Bitmap bmp) {
-        imageView.setImageBitmap(bmp);
-    }
-
-    public ImageView getImageView() {
-        return imageView;
-    }
-
-    public void setProgressVisible() {
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
-    public void setProgressGone() {
-        progressBar.setVisibility(View.GONE);
-    }
-
-    public void setLowOpacity() {
-        imageView.setAlpha((float) 1.0);
-    }
-
-    public void setHighOpacity() {
-        imageView.setAlpha((float) 0.5);
-    }
-
-    public void saveImage() {
+    public void saveImage() {       // Saving image from ImageView to Pictures/Picoto directory
         File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/Picoto");
         if (!dir.isDirectory()) {
             if (dir.mkdir())
@@ -141,5 +116,34 @@ public class ImageViewFragment extends MvpAppCompatFragment implements IImageVie
         }
     }
 
+    //  Just getters & setters lower
 
+    @Override
+    public void setImage(Bitmap bmp) {
+        imageView.setImageBitmap(bmp);
+    }
+
+    @Override
+    public void setProgressVisible() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void setProgressGone() {
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void setLowOpacity() {
+        imageView.setAlpha((float) 1.0);
+    }
+
+    @Override
+    public void setHighOpacity() {
+        imageView.setAlpha((float) 0.5);
+    }
+
+    public ImageView getImageView() {
+        return imageView;
+    }
 }

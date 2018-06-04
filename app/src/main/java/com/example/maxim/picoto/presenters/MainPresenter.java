@@ -25,13 +25,7 @@ public class MainPresenter extends MvpPresenter<IMainView> {
     private RecyclerViewPresenter recyclerViewPresenter;
     private ImageViewPresenter imageViewPresenter;
 
-    public void setRecyclerViewPresenter(RecyclerViewPresenter recyclerViewPresenter) {
-        this.recyclerViewPresenter = recyclerViewPresenter;
-    }
 
-    public void setImageViewPresenter(ImageViewPresenter imageViewPresenter) {
-        this.imageViewPresenter = imageViewPresenter;
-    }
 
     public void createFragment() {
         getViewState().createFragment();
@@ -43,11 +37,11 @@ public class MainPresenter extends MvpPresenter<IMainView> {
         getViewState().requestImageFromCamera(file);
     }
 
-    public void onCameraImageReady() {
+    public void onCameraImageReady() {                  // Handle camera activity result
         callback.onActivityResultListener(file);
     }
 
-    public void onGalleryImageReady() {
+    public void onGalleryImageReady() {                 // Handle gallery activity result
         callback.onActivityResultListener(file);
     }
 
@@ -97,7 +91,13 @@ public class MainPresenter extends MvpPresenter<IMainView> {
         return imageViewPresenter.getImageFile();
     }
 
+    public void setRecyclerViewPresenter(RecyclerViewPresenter recyclerViewPresenter) {
+        this.recyclerViewPresenter = recyclerViewPresenter;
+    }
 
+    public void setImageViewPresenter(ImageViewPresenter imageViewPresenter) {
+        this.imageViewPresenter = imageViewPresenter;
+    }
 
     public void setFile(File file) {
         this.file = file;

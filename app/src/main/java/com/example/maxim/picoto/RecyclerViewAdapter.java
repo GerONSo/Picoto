@@ -40,7 +40,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {     // Handling recycler view clicks
         Log.d("position", String.valueOf(position));
         holder.imageImageView.setImageBitmap(recyclerViewPresenter.getList().get(position).getImage());
         holder.nameTextView.setText(recyclerViewPresenter.getList().get(position).getName());

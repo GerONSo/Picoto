@@ -9,11 +9,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-/**
- * Created by maxim on 24.03.18.
- */
-
-public class ImageUtils {
+public class ImageUtils {       //  Subsidiary class for scaling images
     public static Bitmap getScaledBitmap(File file, int destWidth, int destHeight) throws IOException {
         InputStream is = new FileInputStream(file);
         BitmapFactory.Options sizeOptions = new BitmapFactory.Options();

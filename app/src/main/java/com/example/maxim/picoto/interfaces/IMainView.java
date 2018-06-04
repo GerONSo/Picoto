@@ -19,10 +19,6 @@ public interface IMainView extends MvpView{
     void requestImageFromCamera(File fileName);
     @StateStrategyType(SkipStrategy.class)
     void requestImageFromGallery(File file);
-    @StateStrategyType(SkipStrategy.class)
-    void getTempPhotoFile();
-    @StateStrategyType(SingleStateStrategy.class)
-    void setImage(Bitmap image);
     @StateStrategyType(OneExecutionStateStrategy.class)
     void createFileByContentUri(Uri src, File dst);
     @StateStrategyType(SkipStrategy.class)

@@ -145,7 +145,9 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), cropResultUri);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    ConstraintLayout layout = findViewById(R.id.recycler_view_fragment);
+                    Snackbar snackbar = Snackbar.make(layout, "Something went wrong :(", Snackbar.LENGTH_SHORT);
+                    snackbar.show();
                 }
                 presenter.setCroppedImage(bitmap);
 
@@ -177,7 +179,9 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
                 }
             }
         } catch (IOException e) {
-            Toast.makeText(this, "Error creating File by Content Uri", Toast.LENGTH_SHORT).show();
+            ConstraintLayout layout = findViewById(R.id.recycler_view_fragment);
+            Snackbar snackbar = Snackbar.make(layout, "Error creating File by Content Uri", Snackbar.LENGTH_SHORT);
+            snackbar.show();
         }
         presenter.onGalleryImageReady();
     }

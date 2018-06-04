@@ -3,11 +3,15 @@ package com.example.maxim.picoto.presenters;
 
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
+import com.example.maxim.picoto.R;
 import com.example.maxim.picoto.interfaces.IImageView;
 import com.example.maxim.picoto.utils.ImageUtils;
 
@@ -22,6 +26,7 @@ public class ImageViewPresenter extends MvpPresenter<IImageView> {
     private ImageView imageView;
     private Bitmap imageStyle;
     private File imageFile;
+    private View imageFragmentView;
 
     public void setImage(Bitmap bmp) {
         getViewState().setImage(bmp);
@@ -44,7 +49,9 @@ public class ImageViewPresenter extends MvpPresenter<IImageView> {
         try {
             bitmap = ImageUtils.getScaledBitmap(mainImage, maxSide, maxSide);
         } catch (IOException e) {
-
+            ConstraintLayout layout = imageFragmentView.findViewById(R.id.recycler_view_fragment);
+            Snackbar snackbar = Snackbar.make(layout, "Something went wrong :(", Snackbar.LENGTH_SHORT);
+            snackbar.show();
         }
         imageFile = mainImage;
 
@@ -110,5 +117,9 @@ public class ImageViewPresenter extends MvpPresenter<IImageView> {
                 setImage(file);
             }
         });
+    }
+
+    public void setImageFragmentView(View imageFragmentView) {
+        this.imageFragmentView = imageFragmentView;
     }
 }

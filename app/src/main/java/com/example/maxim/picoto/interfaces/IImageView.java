@@ -3,6 +3,7 @@ package com.example.maxim.picoto.interfaces;
 
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.view.View;
 
 import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;

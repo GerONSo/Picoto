@@ -11,11 +11,8 @@ import com.example.maxim.picoto.interfaces.IRecyclerView;
 import com.example.maxim.picoto.R;
 import com.example.maxim.picoto.RecyclerViewData;
 
+import java.io.File;
 import java.util.ArrayList;
-
-/**
- * Created by maxim on 23.03.18.
- */
 
 @InjectViewState
 public class RecyclerViewPresenter extends MvpPresenter<IRecyclerView>{
@@ -76,5 +73,9 @@ public class RecyclerViewPresenter extends MvpPresenter<IRecyclerView>{
 
     public void redrawRecyclerView() {
         getViewState().redrawRecyclerView();
+    }
+
+    public File getImageFile() {
+        return mainPresenter.getImageFile();
     }
 }

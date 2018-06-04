@@ -12,24 +12,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.PresenterType;
-import com.example.maxim.picoto.helpers.ServerHelper;
+import com.example.maxim.picoto.helpers.HttpServerHelper;
 import com.example.maxim.picoto.interfaces.IRecyclerView;
 import com.example.maxim.picoto.presenters.MainPresenter;
 import com.example.maxim.picoto.presenters.RecyclerViewPresenter;
-
-import java.io.IOException;
-
+import java.io.File;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
 public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyclerView {
-
-
 
     @InjectPresenter(type = PresenterType.LOCAL)
     public RecyclerViewPresenter recyclerViewPresenter;
@@ -37,12 +32,10 @@ public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyc
     @BindView(R.id.listView) public RecyclerView listView;
     private RecyclerViewAdapter adapter;
     private MainPresenter mainPresenter;
-    private Bitmap styleImage;
+    private File styleImageFile;
+    private static boolean isImageSetted = true;
 
-
-    public RecyclerViewFragment() {
-        // Required empty public constructor
-    }
+    public RecyclerViewFragment() {}
 
     public static RecyclerViewFragment newInstance(){
         return new RecyclerViewFragment();
@@ -50,7 +43,6 @@ public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyc
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_recycler_view, container, false);
         ButterKnife.bind(this, view);
         return view;
@@ -63,40 +55,40 @@ public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyc
         recyclerViewPresenter.setResources(getResources());
         recyclerViewPresenter.setContext(getContext());
         recyclerViewPresenter.setList();
-        //recyclerViewPresenter.setMainPresenter(mainPresenter);
-
-        Log.d("mytag", String.valueOf(recyclerViewPresenter.getList().get(0).getName()));
-
+        Log.d("name", String.valueOf(recyclerViewPresenter.getList().get(0).getName()));
         listView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
-
         adapter=new RecyclerViewAdapter(this, recyclerViewPresenter, new RecyclerViewAdapter.OnStyleSelected() {
             @Override
             public void onStyleSelected(int position) {
-                styleImage=recyclerViewPresenter.getImage();
-                if(styleImage == null) {
+                styleImageFile = recyclerViewPresenter.getImageFile();
+                if(styleImageFile == null) {
                     ConstraintLayout layout = view.findViewById(R.id.recycler_view_fragment);
                     Snackbar snackbar = Snackbar.make(layout, "Select or make photo", Snackbar.LENGTH_SHORT);
                     snackbar.show();
-                    //mainPresenter.onNullPointerExceptionOccured();
                     return;
                 }
                 mainPresenter.setProgressVisible();
                 mainPresenter.setHighOpacity();
-                try {
-                    ServerHelper.sendImage(styleImage, position, new ServerHelper.OnImageResult() {
-                        @Override
-                        public void onImageResult(Bitmap image) {
-                            mainPresenter.setProgressGone();
-                            mainPresenter.setLowOpacity();
-                            Log.d("heii","here");
-                            mainPresenter.setImage(image);
+                isImageSetted = false;
+                HttpServerHelper.sendImage(styleImageFile, position, new HttpServerHelper.OnImageResult() {
+                    @Override
+                    public void onImageResult(Bitmap resultImage) {
+
+                        mainPresenter.setProgressGone();
+                        mainPresenter.setLowOpacity();
+                        Log.d("heii","here");
+                        try {
+                            mainPresenter.setImage(resultImage);
+                            isImageSetted = true;
+                        } catch (NullPointerException e) {
+                            ConstraintLayout layout = view.findViewById(R.id.recycler_view_fragment);
+                            Snackbar snackbar = Snackbar.make(layout, "Something went wrong :(", Snackbar.LENGTH_SHORT);
+                            snackbar.show();
                         }
-                    });
 
+                    }
+                });
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
         });
         listView.setAdapter(adapter);
@@ -111,11 +103,11 @@ public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyc
         this.mainPresenter.setRecyclerViewPresenter(recyclerViewPresenter);
     }
 
-    public RecyclerViewAdapter getAdapter() {
-        return adapter;
-    }
-
     public void redrawRecyclerView() {
         adapter.notifyDataSetChanged();
+    }
+
+    public static boolean isImageSetted() {
+        return isImageSetted;
     }
 }

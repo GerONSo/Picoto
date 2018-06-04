@@ -1,56 +1,46 @@
 package com.example.maxim.picoto;
 
 
-import android.app.Activity;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.arellomobile.mvp.presenter.PresenterType;
 import com.example.maxim.picoto.interfaces.IImageView;
 import com.example.maxim.picoto.presenters.ImageViewPresenter;
 import com.example.maxim.picoto.presenters.MainPresenter;
 import com.example.maxim.picoto.utils.FileUtils;
-
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import static com.example.maxim.picoto.RecyclerViewFragment.isImageSetted;
 
 
 public class ImageViewFragment extends MvpAppCompatFragment implements IImageView {
 
-    @InjectPresenter
-    ImageViewPresenter presenter;
-
-
-    private MainPresenter mainPresenter;
-
-
+    @InjectPresenter ImageViewPresenter presenter;
     @BindView(R.id.image_view) public ImageView imageView;
     @BindView(R.id.progress_bar) public ProgressBar progressBar;
     @BindView(R.id.camera_button) public FloatingActionButton cameraButton;
 
-    public static final int REQUEST_IMAGE_CAPTURE = 1;
-
-    public ImageViewFragment() {
-        // Required empty public constructor
-    }
+    private MainPresenter mainPresenter;
+    private View imageFragmentView;
+    public ImageViewFragment() {}
 
     public static ImageViewFragment newInstance() {
         return new ImageViewFragment();
@@ -59,8 +49,6 @@ public class ImageViewFragment extends MvpAppCompatFragment implements IImageVie
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        //ButterKnife.bind(this);
         View view = inflater.inflate(R.layout.fragment_image_view, container, false);
         ButterKnife.bind(this, view);
         return view;
@@ -68,15 +56,15 @@ public class ImageViewFragment extends MvpAppCompatFragment implements IImageVie
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        imageFragmentView = view;
         Bitmap openGallery = null;
         if (savedInstanceState == null) {
             presenter.setMainPresenter(mainPresenter);
             openGallery = BitmapFactory.decodeResource(getResources(), R.drawable.no_image);
             presenter.setImage(openGallery);
         }
+        presenter.setImageFragmentView(imageFragmentView);
         presenter.setImageView(imageView);
-        //progressBar.setVisibility(View.VISIBLE);
-
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,7 +74,12 @@ public class ImageViewFragment extends MvpAppCompatFragment implements IImageVie
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.openGallery();
+                if(isImageSetted()) presenter.openGallery();
+                else {
+                    ConstraintLayout layout = imageFragmentView.findViewById(R.id.image_view_fragment);
+                    Snackbar snackbar = Snackbar.make(layout, "Wait until image will be stylized, please", Snackbar.LENGTH_SHORT);
+                    snackbar.show();
+                }
             }
         });
     }
@@ -140,8 +133,11 @@ public class ImageViewFragment extends MvpAppCompatFragment implements IImageVie
             fos.flush();
             fos.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            ConstraintLayout layout = imageFragmentView.findViewById(R.id.image_view_fragment);
+            Snackbar snackbar = Snackbar.make(layout, "Something went wrong :(", Snackbar.LENGTH_SHORT);
+            snackbar.show();
         }
-
     }
+
+
 }

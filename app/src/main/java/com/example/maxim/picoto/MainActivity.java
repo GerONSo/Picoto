@@ -27,6 +27,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.arellomobile.mvp.presenter.PresenterType;
 import com.example.maxim.picoto.interfaces.IMainView;
 import com.example.maxim.picoto.presenters.MainPresenter;
+import com.example.maxim.picoto.utils.FileUtils;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.File;
@@ -181,16 +182,29 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
         ConstraintLayout layout = findViewById(R.id.great_layout);
         switch (item.getItemId()) {
             case R.id.save:
-                saveImage();
-                Snackbar snackbar = Snackbar.make(layout, "Successfuly saved", Snackbar.LENGTH_SHORT);
-                snackbar.show();
+                if(presenter.getImageFile() != null) {
+                    saveImage();
+                    Snackbar snackbar = Snackbar.make(layout, "Successfuly saved", Snackbar.LENGTH_SHORT);
+                    snackbar.show();
+                }
+                else {
+                    onNullPointerExceptionOccured();
+                }
                 break;
             case R.id.share:
-                String imagePath = presenter.getImageFile().getAbsolutePath();
-                createInstagramIntent(imagePath);
+                try {
+                    String imagePath = presenter.getImageFile().getAbsolutePath();
+                    createShareIntent(imagePath);
+                } catch (NullPointerException e) {
+                    onNullPointerExceptionOccured();
+                }
                 break;
             case R.id.crop:
-                onSelectImageClick();
+                try {
+                    onSelectImageClick();
+                } catch (NullPointerException e) {
+                   onNullPointerExceptionOccured();
+                }
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -200,13 +214,15 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
         presenter.saveImage();
     }
 
-    private void createInstagramIntent(String mediaPath) {  // Share Intent
+    private void createShareIntent(String mediaPath) {  // Share Intent
         Log.d("mediaPath", mediaPath);
-        Intent share = new Intent(Intent.ACTION_SEND);
-        share.setType("image/*");
         File media = new File(mediaPath);
         Uri uri = Uri.fromFile(media);
-        share.putExtra(Intent.EXTRA_STREAM, uri);
+        Uri ur = FileUtils.getContentUri(getApplicationContext(), media);
+        Intent share = new Intent();
+        share.setAction(Intent.ACTION_SEND);
+        share.putExtra(Intent.EXTRA_STREAM, ur);
+        share.setType("image/*");
         startActivity(Intent.createChooser(share, "Share to"));
     }
 
@@ -223,5 +239,6 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
     public void onNullPointerExceptionOccured() {       // Handling NullPointerException when nothing was chosen
         ConstraintLayout layout = findViewById(R.id.great_layout);
         Snackbar snackbar = Snackbar.make(layout, "Select or make photo", Snackbar.LENGTH_SHORT);
+        snackbar.show();
     }
 }

@@ -18,4 +18,8 @@ public class FileUtils {                      //Subsidiary class for creating te
                 new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date()) +
                 suffix);
     }
+
+    public static Uri getContentUri(Context context, File file) {
+        return FileProvider.getUriForFile(context, CONTENT_AUTHORITY, file);
+    }
 }

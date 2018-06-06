@@ -45,7 +45,7 @@ public class MainPresenter extends MvpPresenter<IMainView> {
         callback.onActivityResultListener(file);
     }
 
-    private File getTempPhotoFile() {                          // Create Temp File
+    public File getTempPhotoFile() {                          // Create Temp File
         File filesDir = FILES_DIR;
         return FileUtils.getNewImageFile(filesDir, "tmp_", ".jpg");
     }
@@ -101,9 +101,14 @@ public class MainPresenter extends MvpPresenter<IMainView> {
 
     public void setFile(File file) {
         this.file = file;
+        imageViewPresenter.setImageFile(file);
     }
 
     public void setCroppedImage(Bitmap bmp) {
         imageViewPresenter.setCroppedImage(bmp);
+    }
+
+    public void setImageFile(File file) {
+        imageViewPresenter.setImageFile(file);
     }
 }

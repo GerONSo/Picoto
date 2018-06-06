@@ -135,6 +135,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
                     snackbar.show();
                 }
                 presenter.setCroppedImage(bitmap);
+                //presenter.setFile();
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
@@ -194,6 +195,7 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
             case R.id.share:
                 try {
                     String imagePath = presenter.getImageFile().getAbsolutePath();
+                    Log.d("sharePath", imagePath);
                     createShareIntent(imagePath);
                 } catch (NullPointerException e) {
                     onNullPointerExceptionOccured();
@@ -217,11 +219,11 @@ public class MainActivity extends MvpAppCompatActivity implements IMainView {
     private void createShareIntent(String mediaPath) {  // Share Intent
         Log.d("mediaPath", mediaPath);
         File media = new File(mediaPath);
-        Uri uri = Uri.fromFile(media);
-        Uri ur = FileUtils.getContentUri(getApplicationContext(), media);
+//        Uri uri = Uri.fromFile(media);
+        Uri contentUri = FileProvider.getUriForFile(this, CONTENT_AUTHORITY, media);
         Intent share = new Intent();
         share.setAction(Intent.ACTION_SEND);
-        share.putExtra(Intent.EXTRA_STREAM, ur);
+        share.putExtra(Intent.EXTRA_STREAM, contentUri);
         share.setType("image/*");
         startActivity(Intent.createChooser(share, "Share to"));
     }

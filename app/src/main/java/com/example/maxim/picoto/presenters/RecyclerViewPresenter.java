@@ -112,4 +112,8 @@ public class RecyclerViewPresenter extends MvpPresenter<IRecyclerView> {
     public void setImage(Bitmap image) {
         mainPresenter.setImage(image);
     }
+
+    public void setImageFile(File file) {
+        mainPresenter.setImageFile(file);
+    }
 }

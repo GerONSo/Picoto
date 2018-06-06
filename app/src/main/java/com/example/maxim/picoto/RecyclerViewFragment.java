@@ -20,6 +20,9 @@ import com.example.maxim.picoto.interfaces.IRecyclerView;
 import com.example.maxim.picoto.presenters.MainPresenter;
 import com.example.maxim.picoto.presenters.RecyclerViewPresenter;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -87,6 +90,7 @@ public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyc
                         Log.d("heii","here");
                         try {
                             recyclerViewPresenter.setImage(resultImage);
+                            recyclerViewPresenter.setImageFile(getImageFile(resultImage, view));
                             isImageSetted = true;
                         } catch (NullPointerException e) {
                             ConstraintLayout layout = view.findViewById(R.id.recycler_view_fragment);
@@ -114,5 +118,18 @@ public class RecyclerViewFragment extends MvpAppCompatFragment implements IRecyc
         return isImageSetted;
     }
 
-
+    private File getImageFile(Bitmap resultImage, View view) {
+        File imageFile = mainPresenter.getTempPhotoFile();
+        try {
+            FileOutputStream fos = new FileOutputStream(imageFile);
+            resultImage.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (IOException e) {
+            ConstraintLayout layout = view.findViewById(R.id.recycler_view_fragment);
+            Snackbar snackbar = Snackbar.make(layout, "Something went wrong :(", Snackbar.LENGTH_SHORT);
+            snackbar.show();
+        }
+        return imageFile;
+    }
 }

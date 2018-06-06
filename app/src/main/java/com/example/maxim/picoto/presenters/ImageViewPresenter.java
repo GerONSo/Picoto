@@ -16,6 +16,8 @@ import com.example.maxim.picoto.interfaces.IImageView;
 import com.example.maxim.picoto.utils.ImageUtils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 @InjectViewState
@@ -34,6 +36,17 @@ public class ImageViewPresenter extends MvpPresenter<IImageView> {
 
     public void setCroppedImage(Bitmap bmp) {       // Set cropped image to ImageView
         imageStyle = bmp;
+        imageFile = mainPresenter.getTempPhotoFile();
+        try {
+            FileOutputStream fos = new FileOutputStream(imageFile);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (IOException e) {
+            ConstraintLayout layout = imageFragmentView.findViewById(R.id.image_view_fragment);
+            Snackbar snackbar = Snackbar.make(layout, "Something went wrong :(", Snackbar.LENGTH_SHORT);
+            snackbar.show();
+        }
         setImage(bmp);
     }
 
@@ -117,6 +130,10 @@ public class ImageViewPresenter extends MvpPresenter<IImageView> {
 
     public File getImageFile() {
         return imageFile;
+    }
+
+    public void setImageFile(File file) {
+        imageFile = file;
     }
 
     public void setImageFragmentView(View imageFragmentView) {

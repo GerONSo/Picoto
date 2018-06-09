@@ -80,12 +80,18 @@ public class ImageViewPresenter extends MvpPresenter<IImageView> {
     }
 
     public void openGallery() {                                                          // Starting gallery activity
-        mainPresenter.openGallery(new MainPresenter.OnActivityResultListener() {
-            @Override
-            public void onActivityResultListener(File file) {
-                setImage(file);
-            }
-        });
+        try {
+            mainPresenter.openGallery(new MainPresenter.OnActivityResultListener() {
+                @Override
+                public void onActivityResultListener(File file) {
+                    setImage(file);
+                }
+            });
+        } catch (NullPointerException e) {
+            ConstraintLayout layout = imageFragmentView.findViewById(R.id.image_view_fragment);
+            Snackbar snackbar = Snackbar.make(layout, "Something went wrong :(", Snackbar.LENGTH_SHORT);
+            snackbar.show();
+        }
     }
 
     //  Just getters & setters lower
